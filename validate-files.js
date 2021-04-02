@@ -16,7 +16,10 @@ async function validate() {
         if (!fs.lstatSync(filePath).isFile()) continue
 
         const res = await fetch(`${baseUrl}/files/${file}`)
-        const result = await streamEqual(res.body, fs.createReadStream(filePath))
+        const bodyStream = res.body
+        const fileStream = fs.createReadStream(filePath)
+        const result = await streamEqual(bodyStream, fileStream)
+        fileStream.close()
         
         console.log(filePath, result)
     }
