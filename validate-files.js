@@ -1,4 +1,4 @@
-const fetch = require("node-fetch").default
+const fetch = require("node-fetch-retry")
 var streamEqual = require('stream-equal')
 const fs = require('fs')
 const path = require('path')
@@ -15,7 +15,7 @@ async function validate() {
         const filePath = path.join(folder, file)
         if (!fs.lstatSync(filePath).isFile()) continue
 
-        const res = await fetch(`${baseUrl}/files/${file}`)
+        const res = await fetch(`${baseUrl}/files/${file}`, { method: 'GET', retry: 3, timeout: 2000 })
         const bodyStream = res.body
         const fileStream = fs.createReadStream(filePath)
         const result = await streamEqual(bodyStream, fileStream)
