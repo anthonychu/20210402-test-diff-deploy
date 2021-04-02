@@ -3,7 +3,8 @@ var streamEqual = require('stream-equal')
 const fs = require('fs')
 const path = require('path')
 
-const baseUrl = "http://localhost:4280"
+const baseUrl = "https://thankful-desert-0bca1c01e.azurestaticapps.net"
+// const baseUrl = "http://localhost:4280"
 const baseFolder = "web"
 
 async function validate() {
