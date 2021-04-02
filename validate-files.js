@@ -7,6 +7,11 @@ const baseUrl = "https://witty-desert-01bfde800.azurestaticapps.net"
 // const baseUrl = "http://localhost:4280"
 const baseFolder = "web"
 
+const startFrom = process.argv[2]
+console.log(startFrom)
+
+let started = typeof(startFrom) === 'undefined'
+
 async function validate() {
     const folder = path.join(baseFolder, "files")
     const files = fs.readdirSync(folder)
@@ -14,6 +19,13 @@ async function validate() {
     const errors = []
 
     for (const file of files) {
+        if (!started && startFrom !== file) {
+            console.log(file, 'skipped')
+            continue
+        }
+
+        started = true
+
         const filePath = path.join(folder, file)
         if (!fs.lstatSync(filePath).isFile()) continue
 
@@ -25,7 +37,7 @@ async function validate() {
         // bodyStream.destroy()
         
         if (!result) errors.push(file)
-        console.log(filePath, result)
+        console.log(file, result)
     }
 
     console.log(JSON.stringify(errors, null, 2))
