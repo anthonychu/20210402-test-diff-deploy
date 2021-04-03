@@ -18,24 +18,33 @@ async function validate() {
 
     const errors = []
 
-    for (const file of files) {
-        if (!started && startFrom !== file) {
-            console.log(file, 'skipped')
-            continue
-        }
+    // for (const file of files) {
+    //     if (!started && startFrom !== file) {
+    //         console.log(file, 'skipped')
+    //         continue
+    //     }
 
-        started = true
+    //     started = true
 
-        const filePath = path.join(folder, file)
-        if (!fs.lstatSync(filePath).isFile()) continue
+    //     const filePath = path.join(folder, file)
+    //     if (!fs.lstatSync(filePath).isFile()) continue
 
-        const res = await fetch(`${baseUrl}/files/${file}`)
-        const bodyStream = await res.text()
-        const fileStream = fs.readFileSync(filePath, 'utf-8')
-        const result = bodyStream === fileStream
-        // fileStream.close()
-        // bodyStream.destroy()
+    //     const res = await fetch(`${baseUrl}/files/${file}`)
+    //     const bodyStream = await res.text()
+    //     const fileStream = fs.readFileSync(filePath, 'utf-8')
+    //     const result = bodyStream === fileStream
+    //     // fileStream.close()
+    //     // bodyStream.destroy()
         
+    //     if (!result) errors.push(file)
+    //     console.log(file, result)
+    // }
+
+    for (let i = 999; i < 1502; i++) {
+        const file = `${i}.txt`
+        const res = await fetch(`${baseUrl}/files/${file}`)
+        const result = res.status === 404
+
         if (!result) errors.push(file)
         console.log(file, result)
     }
